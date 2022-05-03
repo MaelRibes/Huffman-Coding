@@ -1,16 +1,31 @@
-# This is a sample Python script.
-
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+text = "Input a tdhbvsufyvgbehrjgvsybiuncsubrtusybfidnext : "
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+def get_frequencies(text):
+    frequencies = {}
+    for char in text:
+        if char in frequencies:
+            frequencies[char] += 1
+        else:
+            frequencies[char] = 1
+    return frequencies
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+freq = get_frequencies(text)
+frequencies_sorted = sorted(freq.items(), key=lambda x: x[1], reverse=True)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print(frequencies_sorted)
+
+
+def alpha_sort(freq):
+    for k in range(len(freq)):
+        for index in range(len(freq) - 1):
+            freq1 = freq[index]
+            freq2 = freq[index + 1]
+            if freq1[1] == freq2[1]:
+                if ord(freq1[0]) > ord(freq2[0]):
+                    freq[index], freq[index + 1] = freq[index + 1], freq[index]
+    return freq
+
+
+print(alpha_sort(frequencies_sorted))
