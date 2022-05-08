@@ -13,5 +13,7 @@ It was invented by David Albert Huffman, and published in 1952.
 3. A binary compressed file and a frequencies text file are generated in the **result** folder. 
 4. The program display on the terminal the compression ratio and the avarage number of bits per characters.
 
+## Organization
+I organized the creation of this project with [Trello](https://trello.com/b/BiNcsIKa/huffmancoding).
 ## Referals
 >D.A. Huffman, A method for the construction of minimum-redundancy codes, Proceedings of the I.R.E., septembre 1952, pp. 1098-1102.
