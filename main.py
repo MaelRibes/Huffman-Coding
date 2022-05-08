@@ -1,5 +1,3 @@
-text = "aaaabbbbccd"
-
 
 def get_frequencies(text):
     frequencies = {}
@@ -42,6 +40,11 @@ class Node:
     def __str__(self):
         return f'Node({self.char},{self.proba},{self.left},{self.right},{self.code})'
 
+    def is_leaf(self):
+        if(self.left is None)and(self.right is None):
+            return True
+        return False
+
 
 def create_list_leaf(dict):
     list_node = []
@@ -75,9 +78,66 @@ def create_huffman_tree(dict_freq):
         nodes.pop(0)
         father = Node('\0', r_child.proba + l_child.proba, l_child, r_child)
         insert_node(nodes, father)
-    return nodes
+    return nodes[0]
 
 
-tab = alpha_sort(get_frequencies(text))
-list_nodes = create_huffman_tree(tab)
-print(list_nodes[0])
+def coding_char(node, p, cod):
+    if node.is_leaf():
+        str_path = ""
+        for i in p:
+            str_path += str(i)
+        cod[node.char] = str_path
+        return
+    if node.left is not None:
+        p.append(node.left.code)
+        coding_char(node.left, p, cod)
+        p.pop(len(p) - 1)
+    if node.right is not None:
+        p.append(node.right.code)
+        coding_char(node.right, p, cod)
+        p.pop(len(p) - 1)
+
+
+def get_coding(root):
+    path = []
+    coding = {}
+    coding_char(root, path, coding)
+    return coding
+
+
+def huffman_coding(text):
+    frequencies_char = get_frequencies(text)
+    freq_char_sorted = alpha_sort(frequencies_char)
+    root = create_huffman_tree(freq_char_sorted)
+    codage = get_coding(root)
+    compressed_text = ""
+    for char in text:
+        compressed_text += codage[char]
+    return compressed_text
+
+
+def file_compression(file_name):
+    file = open('donnees/'+file_name+'.txt', 'r')
+    text = file.read()
+    file.close()
+    compressed_text = huffman_coding(text)
+    text_bin = int(compressed_text, base=2).to_bytes((len(compressed_text) + 7) // 8, byteorder='big')
+    compressed_file = open('results/'+file_name+'_comp.bin', 'wb')
+    compressed_file.write(text_bin)
+    compressed_file.close()
+
+file_compression('extraitalice')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
